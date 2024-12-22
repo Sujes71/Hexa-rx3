@@ -1,6 +1,7 @@
 package es.zed.infrastructure.repository;
 
 import static es.zed.domain.ports.outbound.PokemonPersistencePort.GET_POKEMON_BY_ID_REQUEST;
+import static es.zed.shared.domain.ports.OutboundPort.sendResponse;
 import static es.zed.shared.domain.ports.OutboundPort.registerRequestEvent;
 import static es.zed.shared.domain.ports.OutboundPort.requestEvent;
 
@@ -17,8 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class PokemonRepository {
 
-  public static final String GET_POKEMON_BY_ID_RESPONSE = "getPokemonByIdResponse";
-
   @PostConstruct
   public void listener() {
     registerRequestEvent(GET_POKEMON_BY_ID_REQUEST).subscribe(this::getPokemonById);
@@ -27,6 +26,6 @@ public class PokemonRepository {
   public void getPokemonById(Event event) {
     log.info("Event received: {}", event);
     Pokemon pokemon = new Pokemon(UUID.randomUUID(), "Pikachu");
-    requestEvent(GET_POKEMON_BY_ID_RESPONSE, new PokemonEvent(pokemon.getId(), pokemon.getName()));
+    sendResponse(GET_POKEMON_BY_ID_REQUEST, new PokemonEvent(pokemon.getId(), pokemon.getName()));
   }
 }

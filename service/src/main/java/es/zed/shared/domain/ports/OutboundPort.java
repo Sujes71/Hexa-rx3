@@ -27,6 +27,15 @@ public class OutboundPort {
     consumer.onNext(message);
   }
 
+  public static void sendResponse(String address, Event message) {
+    Subject<Event> consumer = requests.get(address);
+    if (Objects.isNull(consumer)) {
+      log.error("No request consumers to update for address {}", address);
+      return;
+    }
+    responseBuffer.put(address, message);
+  }
+
 
   public static Subject<Event> registerRequestEvent(String address) {
     return requests.computeIfAbsent(address, key -> PublishSubject.create());
@@ -38,12 +47,10 @@ public class OutboundPort {
       if (bufferedResponse != null) {
         log.info("Buffered response found for address: {}", address);
         emitter.onSuccess(bufferedResponse);
+      } else {
+        log.error("Error managing the response");
       }
     }).timeout(10, TimeUnit.SECONDS);
-  }
-
-  public static synchronized void handleEventResponse(String address, Event response) {
-    responseBuffer.put(address, response);
   }
 
 }
