@@ -26,7 +26,7 @@ public class Hexarx3Controller {
   }
 
   @GetMapping(path = Constants.GET_POKEMON_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-  private ResponseEntity<Single<Pokemon>> getPokemonById(@PathVariable("id") final UUID id) {
-    return ResponseEntity.ok(getPokemonUseCase.execute(id));
+  public ResponseEntity<Pokemon> getPokemonById(@PathVariable("id") final UUID id) {
+    return ResponseEntity.ok(getPokemonUseCase.execute(id).blockingGet());
   }
 }
