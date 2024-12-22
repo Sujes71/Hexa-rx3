@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 public class OutboundPort {
 
   private static final ConcurrentHashMap<String, Subject<Event>> requests = new ConcurrentHashMap<>();
-  private static final ConcurrentHashMap<String, SingleEmitter<Event>> responses = new ConcurrentHashMap<>();
   private static final ConcurrentHashMap<String, Event> responseBuffer = new ConcurrentHashMap<>();
 
   public static void requestEvent(String address, Event message) {
@@ -39,22 +38,12 @@ public class OutboundPort {
       if (bufferedResponse != null) {
         log.info("Buffered response found for address: {}", address);
         emitter.onSuccess(bufferedResponse);
-      } else {
-        responses.put(address, emitter);
-        log.info("Emitter registered for address: {}", address);
       }
     }).timeout(10, TimeUnit.SECONDS);
   }
 
   public static synchronized void handleEventResponse(String address, Event response) {
-    SingleEmitter<Event> emitter = responses.remove(address);
-    if (emitter != null) {
-      log.info("Handling response for address: {}", address);
-      emitter.onSuccess(response);
-    } else {
-      log.warn("No emitter found for response with ID: {}. Storing in buffer.", address);
-      responseBuffer.put(address, response);
-    }
+    responseBuffer.put(address, response);
   }
 
 }
