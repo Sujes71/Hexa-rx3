@@ -1,8 +1,8 @@
 package es.zed.rest;
 
-import es.zed.domain.model.Pokemon;
+import es.zed.domain.model.HexaRx3;
 import es.zed.rest.handlers.Hexarx3Handler;
-import es.zed.shared.rest.HexaRxRouting;
+import es.zed.shared.rest.HexaRx3Routing;
 import java.util.UUID;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
 @Controller
-@RequestMapping(HexaRxRouting.BASE_URL)
+@RequestMapping(HexaRx3Routing.BASE_URL)
 public class Hexarx3Controller {
 
   private final Hexarx3Handler hexarx3Handler;
@@ -22,8 +22,8 @@ public class Hexarx3Controller {
     this.hexarx3Handler = hexarx3Handler;
   }
 
-  @GetMapping(path = HexaRxRouting.GET_POKEMON_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
-  public Mono<ResponseEntity<Pokemon>> getPokemonById(@PathVariable("id") final UUID id) {
+  @GetMapping(path = HexaRx3Routing.GET_HEXA_RX3_BY_ID, produces = MediaType.APPLICATION_JSON_VALUE)
+  public Mono<ResponseEntity<HexaRx3>> getHexaRx3ById(@PathVariable("id") final UUID id) {
     return hexarx3Handler.handle(id)
         .map(ResponseEntity::ok)
         .defaultIfEmpty(ResponseEntity.notFound().build());

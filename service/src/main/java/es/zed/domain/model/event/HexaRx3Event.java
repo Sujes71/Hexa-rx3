@@ -3,13 +3,13 @@ package es.zed.domain.model.event;
 import es.zed.shared.domain.model.event.Event;
 import java.util.UUID;
 
-public class PokemonEvent extends Event {
+public class HexaRx3Event extends Event {
 
   private UUID id;
 
   private String name;
 
-  public PokemonEvent(UUID id, String name) {
+  public HexaRx3Event(UUID id, String name) {
     super(UUID.randomUUID());
     this.id = id;
     this.name = name;

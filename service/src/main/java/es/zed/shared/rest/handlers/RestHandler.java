@@ -14,13 +14,9 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public abstract class RestHandler {
 
-  private final RestTemplate restTemplate;
+  private static final RestTemplate restTemplate = new RestTemplate();
 
-  protected RestHandler(RestTemplate restTemplate) {
-    this.restTemplate = restTemplate;
-  }
-
-  protected <T> Single<T> doCall(final String url, final HttpMethod httpMethod, final HttpHeaders httpHeaders, final Object body, final Class<T> responseClass) {
+  public static <T> Single<T> doCall(final String url, final HttpMethod httpMethod, final HttpHeaders httpHeaders, final Object body, final Class<T> responseClass) {
     return Single.defer(() -> {
       log.info("Do call {}, method {}", url, httpMethod);
 
@@ -38,7 +34,7 @@ public abstract class RestHandler {
     });
   }
 
-  private URI createUri(final String uriPath) throws Exception {
+  private static URI createUri(final String uriPath) throws Exception {
     try {
       return new URI(uriPath);
     } catch (URISyntaxException ex) {
@@ -46,7 +42,7 @@ public abstract class RestHandler {
     }
   }
 
-  private <T> T extractResponseData(final ResponseEntity<T> responseEntity) {
+  private static <T> T extractResponseData(final ResponseEntity<T> responseEntity) {
     return responseEntity.getBody();
   }
 }
