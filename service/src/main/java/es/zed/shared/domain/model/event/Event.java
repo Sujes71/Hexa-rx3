@@ -1,8 +1,13 @@
 package es.zed.shared.domain.model.event;
 
+import java.util.UUID;
 import lombok.Getter;
 
 @Getter
 public abstract class Event {
-  String eventId;
+  UUID eventId;
+
+  public Event(UUID eventId) {
+    this.eventId = eventId;
+  }
 }

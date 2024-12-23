@@ -1,12 +1,12 @@
 package es.zed.infrastructure.repository;
 
 import static es.zed.domain.ports.outbound.PokemonPersistencePort.GET_POKEMON_BY_ID_REQUEST_ADDRESS;
-import static es.zed.shared.domain.ports.OutboundPort.eventRegister;
-import static es.zed.shared.domain.ports.OutboundPort.sendResponse;
+import static es.zed.shared.domain.ports.outbound.OutboundPort.consumer;
+import static es.zed.shared.domain.ports.outbound.OutboundPort.sendEventResponse;
 
 import es.zed.domain.model.Pokemon;
-import es.zed.domain.model.event.PokemonEvent;
-import es.zed.shared.domain.model.event.Event;
+import es.zed.shared.domain.model.filter.Filter;
+import io.reactivex.rxjava3.core.Completable;
 import jakarta.annotation.PostConstruct;
 import java.util.UUID;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +17,15 @@ import org.springframework.stereotype.Repository;
 public class PokemonRepository {
 
   @PostConstruct
-  public void listener() {
-    eventRegister(GET_POKEMON_BY_ID_REQUEST_ADDRESS).subscribe(this::getPokemonById);
+  public Completable start() {
+    consumer(GET_POKEMON_BY_ID_REQUEST_ADDRESS).subscribe(this::getPokemonById);
+
+    return Completable.complete();
   }
 
-  public void getPokemonById(Event event) {
-    log.info("Event received: {}", event);
-    Pokemon pokemon = new Pokemon(UUID.randomUUID(), "Pikachu");
-    sendResponse(GET_POKEMON_BY_ID_REQUEST_ADDRESS, new PokemonEvent(pokemon.getId(), pokemon.getName()));
+  public void getPokemonById(Filter filter) {
+    log.info("Filter received: {}", filter);
+    Pokemon pokemon = Pokemon.builder().id(UUID.randomUUID()).name("SCIZOR").build();
+    sendEventResponse(GET_POKEMON_BY_ID_REQUEST_ADDRESS, pokemon);
   }
 }

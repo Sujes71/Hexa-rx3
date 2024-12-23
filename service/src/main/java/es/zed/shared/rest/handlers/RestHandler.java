@@ -1,4 +1,4 @@
-package es.zed.shared.handlers;
+package es.zed.shared.rest.handlers;
 
 import io.reactivex.rxjava3.core.Single;
 import java.net.URI;

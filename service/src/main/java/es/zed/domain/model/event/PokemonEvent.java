@@ -2,18 +2,29 @@ package es.zed.domain.model.event;
 
 import es.zed.shared.domain.model.event.Event;
 import java.util.UUID;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@Data
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 public class PokemonEvent extends Event {
 
   private UUID id;
 
   private String name;
 
+  public PokemonEvent(UUID id, String name) {
+    super(UUID.randomUUID());
+    this.id = id;
+    this.name = name;
+  }
 
+  @Override
+  public UUID getEventId() {
+    return super.getEventId();
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public UUID getId() {
+    return id;
+  }
 }

@@ -1,11 +1,12 @@
 package es.zed.domain.core;
 
 import es.zed.domain.model.Pokemon;
+import es.zed.domain.model.filter.PokemonFilters;
 import es.zed.domain.ports.inbound.GetPokemonUseCase;
 import es.zed.domain.ports.outbound.PokemonPersistencePort;
-import io.reactivex.rxjava3.core.Single;
 import java.util.UUID;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 @Service
 public class GetPokemonUseCaseImpl implements GetPokemonUseCase {
@@ -17,7 +18,8 @@ public class GetPokemonUseCaseImpl implements GetPokemonUseCase {
   }
 
   @Override
-  public Single<Pokemon> execute(UUID id) {
-    return pokemonPersistencePort.getPokemonById(id);
+  public Mono<Pokemon> execute(UUID id) {
+    PokemonFilters pokemonFilters = PokemonFilters.builder().id(id).build();
+    return Mono.from(pokemonPersistencePort.getPokemonById(pokemonFilters).toFlowable());
   }
 }
