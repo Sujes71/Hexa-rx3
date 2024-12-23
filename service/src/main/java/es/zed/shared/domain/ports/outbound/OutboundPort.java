@@ -1,7 +1,7 @@
 package es.zed.shared.domain.ports.outbound;
 
-import es.zed.shared.domain.model.entity.Entity;
-import es.zed.shared.domain.model.filter.Filter;
+import es.zed.shared.domain.model.Filter;
+import es.zed.shared.infrastructure.repository.postgres.entity.Entity;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.core.SingleEmitter;
 import io.reactivex.rxjava3.subjects.PublishSubject;

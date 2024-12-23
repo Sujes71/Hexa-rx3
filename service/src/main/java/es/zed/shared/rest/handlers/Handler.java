@@ -1,6 +1,6 @@
 package es.zed.shared.rest.handlers;
 
 @FunctionalInterface
-public interface Handler<T, E> {
+public interface Handler<E, T> {
   T handle(E event);
 }
