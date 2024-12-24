@@ -4,7 +4,6 @@ import es.zed.shared.infrastructure.repository.postgres.entity.Entity;
 import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
