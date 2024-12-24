@@ -39,10 +39,10 @@ public class OutboundPort {
 
   private static Single<Entity> requestEvent(String address) {
     return Single.create((SingleEmitter<Entity> emitter) -> {
-      Entity bufferedResponse = responseBuffer.remove(address);
-      if (bufferedResponse != null) {
+      Entity entity = responseBuffer.remove(address);
+      if (entity != null) {
         log.info("Buffered response found for address: {}", address);
-        emitter.onSuccess(bufferedResponse);
+        emitter.onSuccess(entity);
       } else {
         log.error("Error managing the response");
       }
